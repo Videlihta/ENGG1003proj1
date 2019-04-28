@@ -1,0 +1,83 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+unsigned i,n;
+void fun()
+{
+	FILE *fp=fopen("test.txt","w");
+	char str[256]="";
+	printf("Input key n:");
+	scanf("%d",&n);getchar();
+	printf("input content，no longer than100:\n");
+	gets(str);
+	for(i=0;i<strlen(str);i++)
+	{
+		if(str[i]>='A'&&str[i]<='Z')
+		{
+			str[i]+=n;
+			if(str[i]>'Z')str[i]-=26;
+		}
+		if(str[i]>='a'&&str[i]<='z')
+		{
+			str[i]+=n;
+			if(str[i]>'z')str[i]-=26;
+		}
+	}
+	printf("Encrypt content is:\n");
+	puts(str);
+	if(fputs(str,fp)!=EOF)printf("successful!\n");
+	fclose(fp);
+}
+void fun1()
+{
+	FILE *fp,*fp1;
+	char str[256]="";		
+	fp=fopen("test.txt","r");
+	if(fp==NULL)exit(1);
+	fp1=fopen("new.txt","w");	
+	printf("input key n:");
+	scanf("%d",&n);
+	while(fgets(str,256,fp)!=NULL)
+	{
+		for(i=0;i<strlen(str);i++)
+		{
+			if(str[i]>='A'&&str[i]<='Z')
+			{
+				str[i]-=n;
+				if(str[i]<'A')str[i]+=26;
+			}
+			if(str[i]>='a'&&str[i]<='z')
+			{
+				str[i]-=n;
+				if(str[i]<'a')str[i]+=26;
+			}
+		}
+		printf("Decrypt content is:\n");
+		puts(str);
+		if(fputs(str,fp1)!=EOF)printf("sucessful!\n");
+	}
+	fcloseall();
+}
+
+void menu()
+{
+	
+	char c;	
+	printf("\n===rotation cipher===\n");
+	printf("1.Encrypt\n2.decrypt\n0.Exit");
+	printf("\n==========================\n");
+	printf("please choose number:");
+	scanf(" %c",&c);
+	switch(c)
+	{
+	case '1':fun();break;
+	case '2':fun1();break;
+	case '0':exit(0);break;
+	}
+}
+
+int main()
+{
+	while(1)menu();
+	return 0;
+}
