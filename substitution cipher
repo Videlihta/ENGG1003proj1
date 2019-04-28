@@ -1,0 +1,128 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+unsigned i;
+char password[27] = {"qwertyuiopasdfghjklzxcvbnm"};
+
+int Password_init() {
+
+	int j;
+	memset(password, 0, sizeof(26));
+	scanf("%s", password);
+	for (j = 0; j < (strlen(password) - 1); j++) {
+		for (i = j+1; i < strlen(password) ; i++) {
+			if (password[j] == password[i ]) {
+				printf("character repeat! \n");
+				fflush(stdin);
+				return 0;
+			}
+		}
+	}
+
+	return 1;
+}
+void fun()
+{
+	FILE *fp = fopen("test.txt", "w");
+	char str[256] = "";
+	
+	int index=0;
+	
+	printf("ABCDEFGHIJKLMNOPQRSTUVWXYZ\n");
+	printf("input Substitution Cipher:\n");
+	if (!Password_init()) {
+
+		return;
+	}
+	getchar();
+	
+	
+	for (i = 0; i < 26; i++) {
+
+		if (password[i] >= 'a'&&password[i] <= 'z') {
+
+			password[i] -= 32;
+		}
+	}
+	
+	printf("type in :\n");
+	gets(str);
+	for (i = 0; i<strlen(str); i++)
+	{
+		if (str[i] >= 'A'&&str[i] <= 'Z')
+		{
+			index = str[i] - 'A';
+			str[i] = password[index];
+			continue;
+		}
+		if (str[i] >= 'a'&&str[i] <= 'z')
+		{
+			str[i] -= 32;
+			index = str[i] - 'A';
+			str[i] = password[index];
+			continue;
+		}
+	}
+	printf("Encrypt after:\n");
+	puts(str);
+	if (fputs(str, fp) != EOF)printf("write in sucess\n");
+	fclose(fp);
+}
+void fun1()
+{
+	FILE *fp, *fp1;
+	int j;
+	char str[256] = "";
+	fp = fopen("test.txt", "r");
+	if (fp == NULL)exit(1);
+	fp1 = fopen("new.txt", "w");
+	
+	while (fgets(str, 256, fp) != NULL)
+	{
+		for (i = 0; i<strlen(str); i++)
+		{
+			if (str[i] >= 'A'&&str[i] <= 'Z')
+			{
+				for (j = 0; j < 26; j++) {
+
+					if (str[i] == password[j]) {
+
+						str[i] = (char)('A' + j);
+						break;
+					}
+
+				}
+			}
+		
+		
+		}
+		printf("After decrypt:\n");
+		puts(str);
+		if (fputs(str, fp1) != EOF)printf("write in sucess\n");
+	}
+	fcloseall();
+}
+
+void menu()
+{
+
+	char c;
+	printf("\nSubtitution\n");
+	printf("1.Encrypt\n2.decrypt\n3.quit");
+	printf("\n");
+	printf("slect:");
+	scanf(" %c", &c);
+	getchar();
+	switch (c)
+	{
+	case '1':fun(); break;
+	case '2':fun1(); break;
+	case '3':exit(0); break;
+	}
+}
+
+int main()
+{
+	while (1)menu();
+	return 0;
+}
