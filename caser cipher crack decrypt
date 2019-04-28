@@ -1,0 +1,66 @@
+#include<stdio.h>
+void analyzer(char*c);
+void decypher(char*c,char*map,int a,int b,int d);
+void createHash(char*c,int a,int b,int d);
+char alphabet[]="abcdefghijklmnopqrstuvwxyz,.!";
+int main()
+{
+           char ch1[10000];
+           char hash[29];
+           printf("Input paragragh:\n");
+           gets(ch1);
+           analyze(ch1);
+           printf("\nAfter decyphered:\n");
+           createHash(hash,7,3,29);
+           decypher(ch1,hash,7,3,29);
+           printf("\n%s\n",ch1);
+           return 1;
+}
+void analyzer(char*c)
+{
+            int a[26]={0};
+            int i=0,j;
+            while(c[i]!='\0')
+            {
+                       if(c[i]!='.'||c[i]!='!'||c[i]!=',')
+                       a[c[i]-'a']++;
+                       printf("%d\t",i++);
+            }
+            for(j=0;j<26;j++)
+            {
+                       printf("%c:%d\n",j+'a',a[j]);
+            }
+}
+void decypher(char*c,char*hashmap,int a,int b,int d)
+{
+             int i=0;
+             int char_pos;
+             while(c[i]!='\0')
+             {
+                  char_pos=c[i]-'a';
+                  if(c[i]!=' ')
+                  {
+                      printf("%c",hashmap[char_pos]);
+                  }
+                  else
+                  {
+                      printf(" ");
+                  }
+                  i++;
+             }
+}
+void creatrepeat(char*c,int a,int b,int d)
+{
+            int i;
+            char encode[29];
+            for(i=0;i<29;i++)
+            {
+                  encode[i]=alphabet[(a*i+b)%d];
+                  printf("%c",encode[i]);
+            }
+            for(i=0;i<29;i++)
+            {
+                c[encode[i]-'a']=alphabet[i];
+            }
+            printf("\n%s\n",alphabet);
+}
